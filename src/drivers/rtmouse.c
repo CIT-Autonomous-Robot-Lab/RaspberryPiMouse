@@ -51,7 +51,7 @@
 // Raspberry Pi 2 B        : 2
 // Raspberry Pi 3 B/A+/B+  : 2
 // Raspberry Pi 4 B        : 4
-#define RASPBERRYPI 2
+#define RASPBERRYPI 4
 
 MODULE_AUTHOR("RT Corporation");
 MODULE_LICENSE("GPL");
