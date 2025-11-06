@@ -52,7 +52,7 @@
 // Raspberry Pi 2 B        : 2
 // Raspberry Pi 3 B/A+/B+  : 2
 // Raspberry Pi 4 B        : 4
-#define RASPBERRYPI 2
+#define RASPBERRYPI 5
 
 #define DEV_RIGHT 0
 #define DEV_LEFT 1
@@ -134,22 +134,36 @@
 #define GPPUPPDN1 58 /* Pin pull-up/down for pins 31:16 */
 #define GPPUPPDN2 59 /* Pin pull-up/down for pins 47:32 */
 #define GPPUPPDN3 60 /* Pin pull-up/down for pins 57:48 */
+#elif RASPBERRYPI == 5
+#define RPI_REG_BASE 0x7C000000
 #endif
 
 /* GPIO Addr */
+#if RASPBERRYPI != 5
 #define RPI_GPIO_OFFSET 0x200000
+#else
+#define RPI_GPIO_OFFSET 0x01508500
+#endif
 #define RPI_GPIO_SIZE 0xC0
 #define RPI_GPIO_BASE (RPI_REG_BASE + RPI_GPIO_OFFSET)
 #define REG_GPIO_NAME "RPi mouse GPIO"
 
 /* Pwm Addr */
+#if RASPBERRYPI != 5
 #define RPI_PWM_OFFSET 0x20C000
+#else
+#define RPI_PWM_OFFSET 0x0100C000
+#endif
 #define RPI_PWM_SIZE 0xC0
 #define RPI_PWM_BASE (RPI_REG_BASE + RPI_PWM_OFFSET)
 #define REG_PWM_NAME "RPi mouse PWM"
 
 /* Clock Addr */
+#if RASPBERRYPI != 5
 #define RPI_CLK_OFFSET 0x101000
+#else
+#define RPI_CLK_OFFSET 0x00700000
+#endif
 #define RPI_CLK_SIZE 0x100
 #define RPI_CLK_BASE (RPI_REG_BASE + RPI_CLK_OFFSET)
 #define REG_CLK_NAME "RPi mouse CLK"
