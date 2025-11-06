@@ -78,6 +78,7 @@ void rpi_pwm_write32(uint32_t offset, uint32_t val)
  *   - clk_base
  *   - clk_status
  */
+/*
 int gpio_map(void)
 {
 	static int clk_status = 1;
@@ -108,21 +109,45 @@ int gpio_map(void)
 	}
 #endif
 
-	/* kill */
+	// kill 
 	if (clk_status == 1) {
 		iowrite32(0x5a000000 | (1 << 5), clk_base + CLK_PWM_INDEX);
 		udelay(1000);
 
-		/* clk set */
+		// clk set
 		iowrite32(0x5a000000 | (2 << 12), clk_base + CLK_PWMDIV_INDEX);
 		iowrite32(0x5a000011, clk_base + CLK_PWM_INDEX);
 
-		udelay(1000); /* wait for 1msec */
+		udelay(1000); // wait for 1msec
 
 		clk_status = 0;
 	}
 
 	return 0;
+}
+*/
+
+static void __iomem *gpio_map(void)
+{
+    void __iomem *mapping;
+
+    printk(KERN_INFO "rtmouse: Attempting to map GPIO - base=0x%08x, offset=0x%08x, size=0x%x\n",
+           RPI_REG_BASE, RPI_GPIO_OFFSET, RPI_GPIO_SIZE);
+
+    if (!request_mem_region(RPI_GPIO_BASE, RPI_GPIO_SIZE, REG_GPIO_NAME)) {
+        printk(KERN_ERR "rtmouse: request_mem_region failed\n");
+        return NULL;
+    }
+
+    mapping = ioremap(RPI_GPIO_BASE, RPI_GPIO_SIZE);
+    if (!mapping) {
+        printk(KERN_ERR "rtmouse: ioremap failed\n");
+        release_mem_region(RPI_GPIO_BASE, RPI_GPIO_SIZE);
+        return NULL;
+    }
+
+    printk(KERN_INFO "rtmouse: GPIO mapped successfully at virtual addr 0x%p\n", mapping);
+    return mapping;
 }
 
 /* Unmap GPIO addresses */
