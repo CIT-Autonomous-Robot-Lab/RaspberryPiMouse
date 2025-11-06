@@ -78,7 +78,6 @@ void rpi_pwm_write32(uint32_t offset, uint32_t val)
  *   - clk_base
  *   - clk_status
  */
-/*
 int gpio_map(void)
 {
 	static int clk_status = 1;
@@ -109,44 +108,21 @@ int gpio_map(void)
 	}
 #endif
 
-	// kill 
+	/* kill */
 	if (clk_status == 1) {
 		iowrite32(0x5a000000 | (1 << 5), clk_base + CLK_PWM_INDEX);
 		udelay(1000);
 
-		// clk set
+		/* clk set */
 		iowrite32(0x5a000000 | (2 << 12), clk_base + CLK_PWMDIV_INDEX);
 		iowrite32(0x5a000011, clk_base + CLK_PWM_INDEX);
 
-		udelay(1000); // wait for 1msec
+		udelay(1000); /* wait for 1msec */
 
 		clk_status = 0;
 	}
 
 	return 0;
-}
-*/
-
-int gpio_map(void)
-{
-    static int clk_status = 1;
-
-    if (!gpio_base)
-        gpio_base = ioremap(RPI_GPIO_BASE, RPI_GPIO_SIZE);
-    if (!pwm_base)
-        pwm_base  = ioremap(RPI_PWM_BASE,  RPI_PWM_SIZE);
-    if (!clk_base)
-        clk_base  = ioremap(RPI_CLK_BASE,  RPI_CLK_SIZE);
-
-    if (!gpio_base || !pwm_base || !clk_base)
-        return -ENOMEM;   // ← 失敗を上に伝える
-
-    if (clk_status == 1) {
-        iowrite32(0x5a000000 | (1 << 5), clk_base + CLK_PWM_INDEX);
-        ...
-        clk_status = 0;
-    }
-    return 0;
 }
 
 /* Unmap GPIO addresses */
