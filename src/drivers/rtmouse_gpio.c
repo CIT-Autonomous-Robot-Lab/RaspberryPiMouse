@@ -127,7 +127,7 @@ int gpio_map(void)
 }
 */
 
-static void __iomem *gpio_map(void)
+void __iomem *gpio_map(void)
 {
     void __iomem *mapping;
 

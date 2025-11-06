@@ -122,7 +122,7 @@ static int dev_init_module(void)
 	}
 
 	/* GPIOレジスタがマップ可能か調べる */
-	retval = gpio_map();
+	retval = (int) (uintptr_t) gpio_map();
 	if (retval != 0) {
 		printk(KERN_ALERT "%s on %s: cannot use GPIO registers.\n",
 		       __func__, DRIVER_NAME);
