@@ -167,6 +167,7 @@ static void spi_remove_device(struct spi_controller *master, unsigned int cs)
  * spiをサーチする関数
  * used in mcp3204_init()
  */
+/*
 static int __callback_find_mcp3204(struct device *dev, void *data)
 {
 	printk(KERN_INFO "    device_name: %s\n", dev->driver->name);
@@ -175,6 +176,23 @@ static int __callback_find_mcp3204(struct device *dev, void *data)
 		mcp3204_probe(to_spi_device(dev));
 	}
 	return 0;
+}
+*/
+static int __callback_find_mcp3204(struct device *dev, void *data)
+{
+    const char *name = NULL;
+
+    if (!dev->driver || !dev->driver->name)
+        return 0;  // ← NULL を必ず避ける
+
+    name = dev->driver->name;
+    printk(KERN_INFO "    device_name: %s\n", name);
+
+    if (mcp320x_dev == NULL && strcmp(name, "mcp320x") == 0) {
+        mcp320x_dev = dev;
+        mcp3204_probe(to_spi_device(dev));
+    }
+    return 0;
 }
 #endif
 
