@@ -13,7 +13,9 @@ make clean
 # Update for Raspberry Pi 4
 sed -i -e "s/#define RASPBERRYPI 2/#define RASPBERRYPI 4/g" rtmouse.c
 make
-sudo insmod rtmouse.ko
+sudo install -D -m 644 rtmouse.ko /lib/modules/$(uname -r)/extra/rtmouse.ko
+sudo depmod -a
+sudo modprobe rtmouse
 
 # initialize the driver
 sleep 1
