@@ -11,7 +11,9 @@ rm Makefile
 ln -s Makefile.header_from_source Makefile
 make clean
 make 
-sudo insmod rtmouse.ko
+sudo install -D -m 644 rtmouse.ko /lib/modules/$(uname -r)/extra/rtmouse.ko
+sudo depmod -a
+sudo modprobe rtmouse
 
 # initialize the driver
 sleep 1
